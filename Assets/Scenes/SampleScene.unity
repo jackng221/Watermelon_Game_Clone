@@ -742,6 +742,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7153774706581353293, guid: 2a0e079acd7104b478b695721ec234e4, type: 3}
+      propertyPath: dropObjData
+      value: 
+      objectReference: {fileID: 11400000, guid: 79a9d08c377b23e47ad080ed1601f752, type: 2}
+    - target: {fileID: 7153774706581353293, guid: 2a0e079acd7104b478b695721ec234e4, type: 3}
+      propertyPath: dropObjPrefab
+      value: 
+      objectReference: {fileID: 4937347070229356074, guid: 37d060cc54093bc42bc65231cd51dc83, type: 3}
+    - target: {fileID: 7153774706581353293, guid: 2a0e079acd7104b478b695721ec234e4, type: 3}
+      propertyPath: largestDropObjGrowth
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7153774706581353294, guid: 2a0e079acd7104b478b695721ec234e4, type: 3}
       propertyPath: m_RootOrder
       value: 2

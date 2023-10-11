@@ -10,6 +10,8 @@ public class PlayerControl : MonoBehaviour
 
     private void Awake()
     {
+        gameManager = GetComponent<GameManager>();
+
         input = new PlayerInput();
         input.Player.PointerClick.performed += (context) => DropObject();
         //input.Player.PointerMove.performed += (context) => Debug.Log("Moved");

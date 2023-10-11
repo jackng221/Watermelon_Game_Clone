@@ -34,7 +34,8 @@ public class GameManager : MonoBehaviour
     }
     public void DropObject(Vector2 worldPos)
     {
-        Instantiate(dropObjPrefab, worldPos, Quaternion.identity);
+        GameObject obj = Instantiate(dropObjPrefab, worldPos, Quaternion.identity);
+        obj.GetComponent<DropObject>().data = dropObjData;
     }
 
     //Scores
