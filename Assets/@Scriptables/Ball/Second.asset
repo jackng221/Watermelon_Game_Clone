@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99bbaef82b2d5642982ab806137abd9, type: 3}
   m_Name: Second
   m_EditorClassIdentifier: 
+  sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  colliderPoints:
+  - {x: -0.5, y: 0.5}
+  - {x: -0.5, y: -0.5}
+  - {x: 0.5, y: -0.5}
+  - {x: 0.5, y: 0.5}
   color: {r: 1, g: 0.9813727, b: 0, a: 1}
   sizeMultiplier: 1.2
-  growthOrder: 1
+  growthSize: 1

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4937347070229356075}
   - component: {fileID: 4937347070229356071}
   m_Layer: 0
-  m_Name: Ball
+  m_Name: DropObjPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,3 +166,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 0}
+  growthSize: 0

@@ -5,43 +5,52 @@ using UnityEngine;
 public class DropObject : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
+    PolygonCollider2D polyCollider;
 
     public SO_DropObjData data; //provided when instantiated
-
-    int growthOrder = 0;
-    public int GrowthOrder { get { return growthOrder; } }
+    public int growthSize = 0;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        polyCollider = GetComponent<PolygonCollider2D>();
     }
 
+    #region Grow on collision
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<DropObject>() == null) return;
-        if (this.growthOrder == data.dropItems.Count - 1) return;    //reached max growth
+        if (this.growthSize == data.dropItems.Count - 1) return;    //reached max growth
 
         DropObject collidedBall = collision.gameObject.GetComponent<DropObject>();
-        if (collidedBall.GrowthOrder == this.growthOrder)
+        if (collidedBall.growthSize == this.growthSize)
         {
             Debug.Log("Collide");
+            collision.gameObject.GetComponent<DropObject>().growthSize = -1;    //attempt to reduce triggering to once per collision
             Grow(collision);
         }
     }
-
     void Grow(Collision2D collision)
     {
         Vector2 mergePos = (gameObject.transform.position + collision.gameObject.transform.position) / 2;
         Destroy(collision.gameObject);
         gameObject.transform.position = mergePos;
 
-        growthOrder++;
-        spriteRenderer.color = data.dropItems[growthOrder].color;
-        gameObject.transform.localScale *= data.dropItems[growthOrder].sizeMultiplier;
+        UpdateObject(this.growthSize + 1);
     }
-    void SetGrowth(int growthOrder)
+    #endregion
+
+    public void UpdateObject(int growthSize)
     {
-        spriteRenderer.color = data.dropItems[growthOrder].color;
-        gameObject.transform.localScale *= data.dropItems[growthOrder].sizeMultiplier;
+        this.growthSize = growthSize;
+        if (data.dropItems[growthSize].sprite != null)
+        {
+            spriteRenderer.sprite = data.dropItems[growthSize].sprite;
+            polyCollider.points = data.dropItems[growthSize].colliderPoints;
+        }
+        spriteRenderer.color = data.dropItems[growthSize].color;
+
+        float tempScale = data.dropItems[growthSize].sizeMultiplier;
+        gameObject.transform.localScale = new Vector3(tempScale, tempScale, tempScale);
     }
 }

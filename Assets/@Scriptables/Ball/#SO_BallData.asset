@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 524e6a36656d8bd4bb45063c5bed6d5e, type: 3}
-  m_Name: SO_BallData
+  m_Name: '#SO_BallData'
   m_EditorClassIdentifier: 
   dropItems:
   - {fileID: 11400000, guid: e6c4a34dc3c54274291a5db6498ce768, type: 2}
   - {fileID: 11400000, guid: 4d246f64b9755d2438bde54ae0c7c408, type: 2}
   - {fileID: 11400000, guid: eb7201f2f545a9946a67152d941acef8, type: 2}
+  largestDropObjGrowth: 2

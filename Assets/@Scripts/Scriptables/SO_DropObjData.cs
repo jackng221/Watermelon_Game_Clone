@@ -6,4 +6,7 @@ using UnityEngine;
 public class SO_DropObjData : ScriptableObject
 {
     public List<SO_DropObj> dropItems;
+
+    [Tooltip("Largest random growth for objects dropped by player. Starts at 0")]
+    public int largestDropObjGrowth = 0;
 }
