@@ -9,5 +9,4 @@ public class SO_DropObj : ScriptableObject
     public Vector2[] colliderPoints;
     public Color color;
     public float sizeMultiplier;
-    public float growthSize;
 }

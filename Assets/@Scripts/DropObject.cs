@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class DropObject : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
     PolygonCollider2D polyCollider;
 
+    public GameManager gameManager;
     public SO_DropObjData data; //provided when instantiated
     public int growthSize = 0;
 
@@ -36,9 +38,15 @@ public class DropObject : MonoBehaviour
         Destroy(collision.gameObject);
         gameObject.transform.position = mergePos;
 
+        Score();
         UpdateObject(this.growthSize + 1);
     }
     #endregion
+
+    void Score()
+    {
+        gameManager.AddScore(growthSize);
+    }
 
     public void UpdateObject(int growthSize)
     {

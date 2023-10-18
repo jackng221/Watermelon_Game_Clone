@@ -820,6 +820,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7153774706581353293, guid: 2a0e079acd7104b478b695721ec234e4, type: 3}
+      propertyPath: scoreMultiplier.m_Curve.Array.data[1].time
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153774706581353293, guid: 2a0e079acd7104b478b695721ec234e4, type: 3}
+      propertyPath: scoreMultiplier.m_Curve.Array.data[1].value
+      value: 101
+      objectReference: {fileID: 0}
     - target: {fileID: 7153774706581353294, guid: 2a0e079acd7104b478b695721ec234e4, type: 3}
       propertyPath: m_RootOrder
       value: 2

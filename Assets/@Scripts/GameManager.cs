@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,8 +17,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] SO_DropObjData dropObjData;
     [SerializeField] SpriteRenderer currentDropSprite;
     [SerializeField] Image nextDropUiImage;
+    [SerializeField] TextMeshProUGUI scoreUI;
 
     [SerializeField] int score;
+    [SerializeField] AnimationCurve scoreMultiplier;
     [SerializeField] int currentDropGrowth = 0;
     [SerializeField] int nextDropGrowth = 0;
 
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour
         GameOver += () => playerControl.enabled = false;
 
         NewDropRoll += () => RollGrowth(false);
+        ScoreUpdate += UpdateScoreUI;
     }
     private void Start()
     {
@@ -40,6 +44,7 @@ public class GameManager : MonoBehaviour
     public void DropObject(Vector2 worldPos)
     {
         GameObject obj = Instantiate(dropObjPrefab, worldPos, Quaternion.identity);
+        obj.GetComponent<DropObject>().gameManager = this;
         obj.GetComponent<DropObject>().data = dropObjData;
         obj.GetComponent<DropObject>().UpdateObject(currentDropGrowth);
 
@@ -88,14 +93,21 @@ public class GameManager : MonoBehaviour
     }
 
     //Scores
-    public void AddScore(int value)
+    public void AddScore(int growth)
     {
-        score += value;
+        float tempAddScore = scoreMultiplier.Evaluate(growth);
+        Debug.Log(tempAddScore);
+        tempAddScore = Mathf.Round(tempAddScore);
+        score += (int) tempAddScore;
         ScoreUpdate.Invoke();
     }
     void ResetScore()
     {
         score = 0;
         ScoreUpdate.Invoke();
+    }
+    void UpdateScoreUI()
+    {
+        scoreUI.text = "Score: \n" + score;
     }
 }

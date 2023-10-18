@@ -10,16 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c99bbaef82b2d5642982ab806137abd9, type: 3}
-  m_Name: Third
+  m_Name: 5th
   m_EditorClassIdentifier: 
-  sprite: {fileID: 2747690628134850419, guid: b670ab75dde984907b8570040daa08c5, type: 3}
+  sprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
   colliderPoints:
-  - {x: -0.25, y: 0.43359375}
+  - {x: 0, y: 0.25}
   - {x: -0.5, y: 0}
-  - {x: -0.25, y: -0.43359375}
-  - {x: 0.25, y: -0.43359375}
+  - {x: 0, y: -0.25}
   - {x: 0.5, y: 0}
-  - {x: 0.25, y: 0.43359375}
-  color: {r: 0, g: 1, b: 0.08543229, a: 1}
-  sizeMultiplier: 1.4
-  growthSize: 2
+  color: {r: 1, g: 0, b: 0.019385815, a: 1}
+  sizeMultiplier: 3.3
