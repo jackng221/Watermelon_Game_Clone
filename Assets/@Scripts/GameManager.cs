@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] int currentDropGrowth = 0;
     [SerializeField] int nextDropGrowth = 0;
 
+    public List<DropObject> invalidDropObjs;
+    bool inCountDown = false;
+    Coroutine countDownCoroutine;
+
     private void Awake()
     {
         playerControl = gameObject.GetComponent<PlayerControl>();
@@ -39,6 +43,19 @@ public class GameManager : MonoBehaviour
     {
         GameStart.Invoke();
     }
+    private void Update()
+    {
+        if (invalidDropObjs.Count != 0 && inCountDown == false)
+        {
+            countDownCoroutine = StartCoroutine(CountDown());
+        }
+        else if (invalidDropObjs.Count == 0 && inCountDown == true)
+        {
+            StopCoroutine(countDownCoroutine);
+            inCountDown = false;
+        }
+    }
+
 
     //Game Mechanics
     public void DropObject(Vector2 worldPos)
@@ -65,6 +82,22 @@ public class GameManager : MonoBehaviour
         }
         UpdateDropSprites(currentDropGrowth, nextDropGrowth);
     }
+    IEnumerator CountDown()
+    {
+        inCountDown = true;
+
+        float timer = 10f;
+        do
+        {
+            Debug.Log(timer);
+            yield return new WaitForSeconds(1);
+            timer -= 1;
+        } while ( timer > 0 );
+        Debug.Log("Time out");
+    }
+
+
+    //UI
     void UpdateDropSprites(int currentgrowthsize, int nextgrowthsize)   //sprite, color, scale only
     {
         //current drop
@@ -91,12 +124,13 @@ public class GameManager : MonoBehaviour
     {
         currentDropSprite.transform.position = dropPos;
     }
+    
 
     //Scores
     public void AddScore(int growth)
     {
         float tempAddScore = scoreMultiplier.Evaluate(growth);
-        Debug.Log(tempAddScore);
+        //Debug.Log(tempAddScore);
         tempAddScore = Mathf.Round(tempAddScore);
         score += (int) tempAddScore;
         ScoreUpdate.Invoke();

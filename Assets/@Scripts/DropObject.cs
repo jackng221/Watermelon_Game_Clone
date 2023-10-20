@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -12,10 +13,24 @@ public class DropObject : MonoBehaviour
     public SO_DropObjData data; //provided when instantiated
     public int growthSize = 0;
 
+    bool inValidArea = false;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         polyCollider = GetComponent<PolygonCollider2D>();
+    }
+    private void Start()
+    {
+        StartCoroutine(CheckInvalidAfterSpawn());
+    }
+    IEnumerator CheckInvalidAfterSpawn()
+    {
+        yield return new WaitForSeconds(1);
+        if (inValidArea == false)
+        {
+            gameManager.invalidDropObjs.Add(this);
+        }
     }
 
     #region Grow on collision
@@ -27,7 +42,7 @@ public class DropObject : MonoBehaviour
         DropObject collidedBall = collision.gameObject.GetComponent<DropObject>();
         if (collidedBall.growthSize == this.growthSize)
         {
-            Debug.Log("Collide");
+            //Debug.Log("Collide");
             collision.gameObject.GetComponent<DropObject>().growthSize = -1;    //attempt to reduce triggering to once per collision
             Grow(collision);
         }
@@ -42,6 +57,24 @@ public class DropObject : MonoBehaviour
         UpdateObject(this.growthSize + 1);
     }
     #endregion
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<BracketArea>() != null)
+        {
+            gameManager.invalidDropObjs.Remove(this);
+            inValidArea = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<BracketArea>() != null)
+        {
+            gameManager.invalidDropObjs.Add(this);
+            inValidArea = false;
+        }
+    }
 
     void Score()
     {
@@ -60,5 +93,10 @@ public class DropObject : MonoBehaviour
 
         float tempScale = data.dropItems[growthSize].sizeMultiplier;
         gameObject.transform.localScale = new Vector3(tempScale, tempScale, tempScale);
+    }
+
+    private void OnDestroy()
+    {
+        gameManager.invalidDropObjs.Remove(this);
     }
 }

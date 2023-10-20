@@ -465,8 +465,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 10
-      value: 50
+      time: 20
+      value: 101
       inSlope: 2
       outSlope: 2
       tangentMode: 0
@@ -490,5 +490,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fd663019b9a4d94682b9d7162113a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topLeftBoundary: {x: -5, y: 2}
-  bottomRightBoundary: {x: 5, y: 2}
+  topLeftBoundary: {x: -5, y: 4}
+  bottomRightBoundary: {x: 5, y: 4}

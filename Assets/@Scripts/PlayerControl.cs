@@ -12,6 +12,10 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] Vector2 topLeftBoundary;
     [SerializeField] Vector2 bottomRightBoundary;
 
+    [SerializeField] float dropCoolDownTarget = 1f;
+    float dropCoolDown;
+
+
     private void Awake()
     {
         gameManager = GetComponent<GameManager>();
@@ -33,12 +37,17 @@ public class PlayerControl : MonoBehaviour
     {
         dropPos = Camera.main.ScreenToWorldPoint(input.Player.PointerMove.ReadValue<Vector2>());
         dropPos.x = Mathf.Clamp(dropPos.x, topLeftBoundary.x, bottomRightBoundary.x);
-        dropPos.y = Mathf.Clamp(dropPos.y, topLeftBoundary.y, bottomRightBoundary.y);
+        dropPos.y = Mathf.Clamp(dropPos.y, bottomRightBoundary.y, topLeftBoundary.y);
         gameManager.UpdateCurrentDropSpritePos(dropPos);
+
+        if (dropCoolDown > 0) dropCoolDown -= Time.deltaTime;
     }
 
     void DropObject()
     {
+        if (dropCoolDown > 0) return;
+
         gameManager.DropObject(dropPos);
+        dropCoolDown = dropCoolDownTarget;
     }
 }
