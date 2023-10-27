@@ -478,6 +478,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   currentDropGrowth: 0
   nextDropGrowth: 0
+  invalidDropObjs: []
 --- !u!114 &7153774706581353292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,3 +493,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topLeftBoundary: {x: -5, y: 4}
   bottomRightBoundary: {x: 5, y: 4}
+  dropCoolDownTarget: 0.8

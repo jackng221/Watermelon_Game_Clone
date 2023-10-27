@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     event Action ScoreUpdate;
     event Action NewDropRoll;
 
-    PlayerControl playerControl;
+    GameControl playerControl;
     [SerializeField] GameObject dropObjPrefab;
     [SerializeField] SO_DropObjData dropObjData;
     [SerializeField] SpriteRenderer currentDropSprite;
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        playerControl = gameObject.GetComponent<PlayerControl>();
+        playerControl = gameObject.GetComponent<GameControl>();
 
         GameStart += () => playerControl.enabled = true;
         GameStart += () => RollGrowth(true);
