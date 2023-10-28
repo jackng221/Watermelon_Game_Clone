@@ -18,15 +18,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] SpriteRenderer currentDropSprite;
     [SerializeField] Image nextDropUiImage;
     [SerializeField] TextMeshProUGUI scoreUI;
+    [SerializeField] GameObject gameOverUI;
 
     [SerializeField] int score;
     [SerializeField] AnimationCurve scoreMultiplier;
     [SerializeField] int currentDropGrowth = 0;
     [SerializeField] int nextDropGrowth = 0;
 
+    [SerializeField] float failTimerDefault = 10f;
+    float failTimer;
+    [SerializeField] GameObject failTimerPrefab;
+    List<GameObject> failTimerObjs;
     public List<DropObject> invalidDropObjs;
     bool inCountDown = false;
     Coroutine countDownCoroutine;
+
 
     private void Awake()
     {
@@ -34,10 +40,15 @@ public class GameManager : MonoBehaviour
 
         GameStart += () => playerControl.enabled = true;
         GameStart += () => RollGrowth(true);
+        gameOverUI.SetActive(false);
         GameOver += () => playerControl.enabled = false;
+        GameOver += EndGame;
 
         NewDropRoll += () => RollGrowth(false);
         ScoreUpdate += UpdateScoreUI;
+
+        failTimerObjs = new List<GameObject>();
+        invalidDropObjs = new List<DropObject>();
     }
     private void Start()
     {
@@ -54,6 +65,21 @@ public class GameManager : MonoBehaviour
             StopCoroutine(countDownCoroutine);
             inCountDown = false;
         }
+
+        while (failTimerObjs.Count < invalidDropObjs.Count)
+        {
+            failTimerObjs.Add( Instantiate(failTimerPrefab) );
+        }
+        while (failTimerObjs.Count > invalidDropObjs.Count)
+        {
+            Destroy(failTimerObjs[failTimerObjs.Count - 1].gameObject);
+            failTimerObjs.RemoveAt(failTimerObjs.Count -1);
+        }
+        for (int i = 0; i < failTimerObjs.Count; i++)
+        {
+            failTimerObjs[i].transform.position = invalidDropObjs[i].gameObject.transform.position;
+            failTimerObjs[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().text = failTimer.ToString() + "s";
+        } 
     }
 
 
@@ -86,14 +112,21 @@ public class GameManager : MonoBehaviour
     {
         inCountDown = true;
 
-        float timer = 10f;
+        failTimer = failTimerDefault;
         do
         {
-            Debug.Log(timer);
+            Debug.Log(failTimer);
             yield return new WaitForSeconds(1);
-            timer -= 1;
-        } while ( timer > 0 );
+            failTimer -= 1;
+        } while ( failTimer > 0 );
+
         Debug.Log("Time out");
+        GameOver.Invoke();
+    }
+    void EndGame()
+    {
+        gameOverUI.SetActive(true);
+        SessionManager.Instance.LoadScene("Title");
     }
 
 
@@ -143,5 +176,11 @@ public class GameManager : MonoBehaviour
     void UpdateScoreUI()
     {
         scoreUI.text = "Score: \n" + score;
+    }
+
+    [ContextMenu("GameOver")]
+    public void GameOverTest()
+    {
+        GameOver.Invoke();
     }
 }

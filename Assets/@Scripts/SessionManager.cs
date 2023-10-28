@@ -27,9 +27,27 @@ public class SessionManager : MonoBehaviour
     TextMeshProUGUI loadSceneProgressText;
     AsyncOperation asyncSceneLoad;
 
+    Dictionary<string, bool> confirmDict;
+
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (instance != this)
+        {
+            Destroy(instance.gameObject);
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        confirmDict = new Dictionary<string, bool>
+        {
+            { "Title", true },
+            { "Game", true }
+        };
+
         loadSceneConfirmBtn = loadSceneCanvas.gameObject.GetComponentInChildren<UnityEngine.UI.Button>().gameObject;
         loadSceneProgressSlider = loadSceneCanvas.gameObject.GetComponentInChildren<UnityEngine.UI.Slider>();
         loadSceneProgressText = loadSceneProgressSlider.gameObject.GetComponentInChildren<TextMeshProUGUI>();
@@ -38,17 +56,20 @@ public class SessionManager : MonoBehaviour
         loadSceneCanvas.SetActive(false);
     }
 
-    public void StartGame()
+    public void LoadScene(string sceneName)
     {
-        StartCoroutine( LoadSceneAsync("Game") );
+        bool tempBool;
+        confirmDict.TryGetValue(sceneName, out tempBool);
+        StartCoroutine( LoadSceneAsync(sceneName, tempBool) );
     }
-    IEnumerator LoadSceneAsync(string sceneName)
+
+    IEnumerator LoadSceneAsync(string sceneName, bool requiresConfirm)
     {
         loadSceneCanvas.SetActive(true);
         asyncSceneLoad = SceneManager.LoadSceneAsync(sceneName);
         Debug.Log("Start loading");
 
-        asyncSceneLoad.allowSceneActivation = false;
+        if (requiresConfirm) asyncSceneLoad.allowSceneActivation = false;
         while (asyncSceneLoad.isDone == false)
         {
             loadSceneProgressSlider.value = asyncSceneLoad.progress;
@@ -63,8 +84,14 @@ public class SessionManager : MonoBehaviour
         }
         Debug.Log("Finish loading");
 
-        loadSceneConfirmBtn.SetActive(true);
+        if (requiresConfirm) loadSceneConfirmBtn.SetActive(true);
+        else
+        {
+            asyncSceneLoad.allowSceneActivation = true;
+            loadSceneCanvas.SetActive(false);
+        }
     }
+
     public void ConfirmReadyToChangeScene()
     {
         loadSceneProgressSlider.value = 0;
