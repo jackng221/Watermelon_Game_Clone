@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        Time.timeScale = 1;
         GameStart.Invoke();
     }
     private void Update()
@@ -123,8 +124,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("Time out");
         GameOver.Invoke();
     }
+    public void GameOverByOutOfMap()
+    {
+        GameOver.Invoke();
+    }
     void EndGame()
     {
+        Time.timeScale = 0;
         gameOverUI.SetActive(true);
         SessionManager.Instance.LoadScene("Title");
     }

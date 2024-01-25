@@ -61,18 +61,29 @@ public class DropObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<BracketArea>() != null)
+        //Enter area designinated as valid play area
+        if (collision.gameObject.GetComponent<AreaCountdown>() != null)
         {
             gameManager.invalidDropObjs.Remove(this);
             inValidArea = true;
+            gameObject.layer = LayerMask.NameToLayer("Default");
+        }
+
+        //Touch trigger below playing field, instant gameover
+        if (collision.gameObject.GetComponent<AreaOutOfMap>() != null)
+        {
+            Destroy(gameObject);
+            gameManager.GameOverByOutOfMap();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<BracketArea>() != null)
+        //Exit valid play area
+        if (collision.gameObject.GetComponent<AreaCountdown>() != null)
         {
             gameManager.invalidDropObjs.Add(this);
             inValidArea = false;
+            gameObject.layer = LayerMask.NameToLayer("InvalidDropObj");
         }
     }
 
