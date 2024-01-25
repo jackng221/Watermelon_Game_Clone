@@ -73,7 +73,7 @@ public class DropObject : MonoBehaviour
         if (collision.gameObject.GetComponent<AreaOutOfMap>() != null)
         {
             Destroy(gameObject);
-            gameManager.GameOverByOutOfMap();
+            gameManager.GameOverByManual();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

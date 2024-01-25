@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Time out");
         GameOver.Invoke();
     }
-    public void GameOverByOutOfMap()
+    public void GameOverByManual()
     {
         GameOver.Invoke();
     }
